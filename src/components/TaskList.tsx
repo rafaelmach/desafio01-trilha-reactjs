@@ -20,15 +20,26 @@ export function TaskList() {
       return
     }
 
-    let newList = [...tasks]
-    newList.push({
+    const newList = {
       id: tasks.length + 1 + Math.random(),
       title: newTaskTitle,
       isComplete: false,
-    })
+    }
 
-    setTasks(newList)
+    setTasks((oldState) => [...oldState, newList])
     setNewTaskTitle("")
+
+    // Eu tinha feito da forma como está abaixo. Aprendi de uma nova maneira com a Rocket [ acima ]
+    // let newList = [...tasks]
+    // newList.push({
+    //   id: tasks.length + 1 + Math.random(),
+    //   title: newTaskTitle,
+    //   isComplete: false,
+    // })
+
+    // setTasks(newList)
+
+    // .....................................................................................
 
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
     // If newTaskTitle existir dê um setTasks(newList) ... else show alert
@@ -36,10 +47,25 @@ export function TaskList() {
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+
+    const newTasks = tasks.map((task) =>
+      task.id === id
+        ? {
+            ...task,
+            isComplete: !task.isComplete,
+          }
+        : task
+    )
+
+    setTasks(newTasks)
   }
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
+
+    const filteredTaskList = tasks.filter((task) => task.id !== id)
+
+    setTasks(filteredTaskList)
   }
 
   return (
